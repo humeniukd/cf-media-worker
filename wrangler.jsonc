@@ -1,0 +1,28 @@
+{
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "media-worker",
+	"main": "src/index.ts",
+	"compatibility_date": "2025-06-01",
+	"observability": {
+		"enabled": true
+	},
+	// Sits directly on top of the same `media` R2 bucket the main app writes to.
+	"r2_buckets": [
+		{
+			"binding": "MEDIA",
+			"bucket_name": "media",
+			"remote": true
+		}
+	],
+	// Serve the HLS gateway from the media subdomain (matches MEDIA_CDN in the main app).
+	// Adjust/remove if you prefer a workers.dev URL or a different custom domain.
+	"routes": [
+		{
+			"pattern": "m.loudyo.com",
+			"custom_domain": true
+		}
+	]
+	// MEDIA_TOKEN_SECRET is a secret — set it with:
+	//   wrangler secret put MEDIA_TOKEN_SECRET
+	// It MUST match the value used by the main app and any WAF rule.
+}
