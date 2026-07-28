@@ -21,7 +21,10 @@
 			"pattern": "m.loudyo.com",
 			"custom_domain": true
 		}
-	]
+	],
+	"vars": {
+		"ALLOWED_ORIGINS": "*"
+	}
 	// MEDIA_TOKEN_SECRET is a secret — set it with:
 	//   wrangler secret put MEDIA_TOKEN_SECRET
 	// It MUST match the value used by the main app and any WAF rule.

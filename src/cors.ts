@@ -25,6 +25,7 @@ export function corsHeaders(request: Request, env: Env): Headers {
         return headers // origin isn't allowed — emit no CORS headers
     }
 
+    headers.set('Access-Control-Allow-Credentials', 'true')
     headers.set('Access-Control-Allow-Methods', 'GET, HEAD, OPTIONS')
     headers.set('Access-Control-Expose-Headers', 'Content-Length, ETag')
     headers.set('Access-Control-Max-Age', '86400')
