@@ -30,7 +30,7 @@ export async function servePlaylist(
 ): Promise<Response> {
     const clientId = url.searchParams.get(CLIENT_ID_PARAM) ?? ''
     const cookie = getCookie(request, STREAM_COOKIE)
-    if (!cookie || !(await verifyLease(`${clientId}${uid}`, cookie, env.MEDIA_TOKEN_SECRET)))
+    if (!cookie || !(await verifyLease(`${clientId}${uid}`, cookie, env.STREAM_TOKEN_SECRET)))
         return new Response('Forbidden', { status: 403 })
 
     const cache = caches.default
@@ -48,7 +48,7 @@ export async function servePlaylist(
     if (!object) return new Response('Stream not available', { status: 404 })
 
     const playlist = await object.text()
-    const lease = await signLease(`/${uid}/${KEY_NAME}`, env.MEDIA_TOKEN_SECRET)
+    const lease = await signLease(`/${uid}/${KEY_NAME}`, env.STREAM_TOKEN_SECRET)
 
     // Append the lease to the #EXT-X-KEY URI only; segment/init URIs stay relative & public.
     const leased = playlist.replace(

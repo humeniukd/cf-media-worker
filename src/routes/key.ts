@@ -13,7 +13,7 @@ export async function serveKey(
     ctx: ExecutionContext
 ): Promise<Response> {
     const token = url.searchParams.get(LEASE_PARAM)
-    if (!token || !(await verifyLease(`/${uid}/${KEY_NAME}`, token, env.MEDIA_TOKEN_SECRET)))
+    if (!token || !(await verifyLease(`/${uid}/${KEY_NAME}`, token, env.STREAM_TOKEN_SECRET)))
         return new Response('Forbidden', { status: 403 })
 
     // Cache key drops the volatile lease so all valid listeners share one entry.

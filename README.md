@@ -31,12 +31,12 @@ The token embedded in the URL is:
    └─ "/<uid>/key.bin"  (the request path)
 ```
 
-`MEDIA_TOKEN_SECRET` must be identical here, in the main app's `signMediaLease`, and in any
+`STREAM_TOKEN_SECRET` must be identical here, in the main app's `signMediaLease`, and in any
 edge WAF rule. Because the Worker verifies the token itself, a WAF rule is **optional** — but
 if you add one it would be:
 
 ```
-is_timed_hmac_valid_v0($MEDIA_TOKEN_SECRET, http.request.uri, 7200, http.request.timestamp.sec, 7)
+is_timed_hmac_valid_v0($STREAM_TOKEN_SECRET, http.request.uri, 7200, http.request.timestamp.sec, 7)
 ```
 
 (separator length `7` = `?lease=`).
@@ -46,7 +46,7 @@ is_timed_hmac_valid_v0($MEDIA_TOKEN_SECRET, http.request.uri, 7200, http.request
 ```bash
 cd media-worker
 npm install
-wrangler secret put MEDIA_TOKEN_SECRET   # same value as the main app
+wrangler secret put STREAM_TOKEN_SECRET   # same value as the main app
 npm run typecheck
 npm run dev        # local dev (use --remote to hit the real R2 bucket)
 npm run deploy
@@ -55,7 +55,7 @@ npm run deploy
 For local dev, put the secret in `.dev.vars`:
 
 ```
-MEDIA_TOKEN_SECRET=<same-as-app>
+STREAM_TOKEN_SECRET=<same-as-app>
 ```
 
 ## Notes

@@ -8,10 +8,10 @@ Handle three behaviors
    one entry (and the lease is still re-verified on every request before the cached key is returned). Range requests bypass the cache and stream straight from R2 as 206.
 
 I confirmed the token format against current Cloudflare docs: <message><separator><timestamp>-<base64(HMAC-SHA256(key, message+timestamp))>, separator ?lease= (length 7),    
-10-digit timestamp — so the WAF expression would be is_timed_hmac_valid_v0($MEDIA_TOKEN_SECRET, http.request.uri, 7200, http.request.timestamp.sec, 7).
+10-digit timestamp — so the WAF expression would be is_timed_hmac_valid_v0($STREAM_TOKEN_SECRET, http.request.uri, 7200, http.request.timestamp.sec, 7).
 
 To run it
 
 cd media-worker && npm install                                                                                                                                                
-wrangler secret put MEDIA_TOKEN_SECRET   # same value as the app's .env                                                                                                       
+wrangler secret put STREAM_TOKEN_SECRET   # same value as the app's .env                                                                                                       
 npm run dev --remote     # or: npm run deploy
